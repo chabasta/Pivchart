@@ -1,0 +1,2291 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.1"
+  title: Pivchart API
+  description: Multi-file boilerplate for OpenAPI Specification.
+  license:
+    name: MIT
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+    email: support@example.com
+servers:
+  - url: http://api.pivchart.com
+
+tags:
+  - name: Drinks
+    description: Drink Controller
+
+  - name: Gatherings
+    description: Gathering Controller
+
+  - name: Gathering drinks
+    description: Gathering Drink Controller
+
+  - name: Gathering members
+    description: Gathering Member Controller
+
+  - name: Competitions
+    description: Competitions Controller
+
+  - name: Competition Drinks
+    description: Competitions Drink Controller
+
+  #  - name: competitions-member-controller
+  #    description: Competitions Member Controller
+
+  - name: Competition Teams
+    description: Competitions Team Controller
+
+  - name: Pubs
+    description: Pub Controller
+
+  - name: Pub Drinks
+    description: Pub Drink Controller
+
+  - name: Users
+    description: User Controller
+
+paths:
+  /drinks:
+    get:
+      tags:
+        - Drinks
+      summary: "Lists all drinks"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DrinkResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+    post:
+      tags:
+        - Drinks
+      summary: "Adds a drink"
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDrinkRequest'
+      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrinkResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+  /drinks/{drinkId}:
+    get:
+      tags:
+        - Drinks
+      summary: "Returns drink with given id"
+      parameters:
+        - $ref: "#/components/parameters/DrinkId"
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrinkResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+    put:
+      tags:
+        - Drinks
+      summary: "Updates drink with given id"
+      parameters:
+        - $ref: "#/components/parameters/DrinkId"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDrinkRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrinkResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+    delete:
+      tags:
+        - Drinks
+      summary: "Deletes drink by id"
+      parameters:
+        - $ref: "#/components/parameters/DrinkId"
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+
+  /gatherings:
+    get:
+      tags:
+        - Gatherings
+      summary: "Gets all gatherings"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GatheringResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+    post:
+      tags:
+        - Gatherings
+      summary: "Create new gathering"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGatheringRequest"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatheringResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+
+  /gatherings/{gatheringId}:
+    get:
+      tags:
+        - Gatherings
+      summary: "Returns gathering with given id"
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatheringResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+    put:
+      tags:
+        - Gatherings
+      summary: "Updates gathering with given id"
+
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGatheringRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatheringResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+    delete:
+      tags:
+        - Gatherings
+      summary: "Delete gathering by id"
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+  /gatherings/{gatheringId}/finish:
+    post:
+      tags:
+        - Gatherings
+      summary: "Finish gathering by id"
+
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+
+  /gatherings/{gatheringId}/drinks:
+    get:
+      tags:
+        - Gathering drinks
+      summary: "Returns all drinks in gathering"
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GatheringDrankDrinkResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+    post:
+      tags:
+        - Gathering drinks
+      summary: "Adds drink to gathering"
+
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGatheringDrinkRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatheringDrankDrinkResponse'
+        '400':
+          description: Bad request - drink may not be from this pub
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+  /gatherings/{gatheringId}/drinks/{gatheringDrinkId}:
+    delete:
+      tags:
+        - Gathering drinks
+      summary: "Deletes drink from gathering"
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+        - $ref: "#/components/parameters/GatheringDrinkId"
+
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad request - drink may not be from this gahering
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+  /gatherings/{gatheringId}/members:
+    get:
+      tags:
+        - Gathering members
+      summary: "Gets all members in gathering"
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GatheringMemberResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+    post:
+      tags:
+        - Gathering members
+      summary: "Adds member to gathering"
+
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGatheringMemberRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatheringMemberResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+  /gatherings/{gatheringId}/members/{gatheringMemberId}:
+    delete:
+      tags:
+        - Gathering members
+      summary: "Delete member from gathering"
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+        - $ref: "#/components/parameters/GatheringMemberId"
+
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+  /gatherings/{gatheringId}/members/{gatheringMemberId}/owner:
+    post:
+      tags:
+        - Gathering members
+      summary: "Passers ownership of gathering to user with given id."
+      parameters:
+        - $ref: "#/components/parameters/GatheringId"
+        - $ref: "#/components/parameters/GatheringMemberId"
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundResponse"
+
+
+  /competitions:
+    get:
+      tags:
+        - Competitions
+      summary: "Gets all competitions"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompetitionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+    post:
+      tags:
+        - Competitions
+      summary: "Creates a new competition"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompetitionRequest'
+
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompetitionResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+
+  /competitions/{competitionId}:
+    get:
+      tags:
+        - Competitions
+      summary: "Returns competition with given id"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompetitionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+    put:
+      tags:
+        - Competitions
+      summary: "Updates competition with given id"
+
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCompetitionRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompetitionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    delete:
+      tags:
+        - Competitions
+      summary: "Delete competitions with given id"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /competitions/{competitionId}/finish:
+    post:
+      tags:
+        - Competitions
+      summary: "If competition is of type 'LEADER_STOPS', this endpoint finishes the competition."
+
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /competitions/{competitionId}/drinks:
+    get:
+      tags:
+        - Competition Drinks
+      summary: "Returns all drinks in competition"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompetitionDrankDrinkResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+    post:
+      tags:
+        - Competition Drinks
+      summary: "Add drink to competition"
+
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompetitionDrinkRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompetitionDrankDrinkResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /competitions/{competitionId}/drinks/{competitionDrinkId}:
+    delete:
+      tags:
+        - Competition Drinks
+      summary: "Delete drink from competition"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+        - $ref: "#/components/parameters/CompetitionDrinkId"
+
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  #  /competitions/{competitionId}/members:
+  #    get:
+  #      tags:
+  #        - competitions-member-controller
+  #      summary: "Get all members in competition"
+  #      parameters:
+  #        -  in: path
+  #           name: competitionId
+  #           description: competitionId
+  #           required: true
+  #           schema:
+  #             type: integer
+  #
+  #      responses:
+  #        '200':
+  #          description: OK
+  #          content:
+  #            application/json:
+  #              schema:
+  #                type: array
+  #                items:
+  #                  $ref: '#/components/schemas/CompetitionMemberResponse'
+  #        '401':
+  #          description: Unauthorized
+  #        '403':
+  #          description: Forbidden
+  #        '404':
+  #          description: Not Found
+  #    post:
+  #      tags:
+  #        - competitions-member-controller
+  #      summary: "Add member to competition"
+  #
+  #      parameters:
+  #        - in: path
+  #          name: competitionId
+  #          description: competitionId
+  #          required: true
+  #          schema:
+  #            type: integer
+  #
+  #      requestBody:
+  #        required: true
+  #        content:
+  #          application/json:
+  #            schema:
+  #              $ref: '#/components/schemas/CreateCompetitionMemberRequest'
+  #
+  #      responses:
+  #        '200':
+  #          description: OK
+  #          content:
+  #            application/json:
+  #              schema:
+  #                $ref: '#/components/schemas/CompetitionMemberResponse'
+  #        '201':
+  #          description: Created
+  #        '401':
+  #          description: Unauthorized
+  #        '403':
+  #          description: Forbidden
+  #        '404':
+  #          description: Not Found
+  #
+  #  /competitions/{competitionId}/members/{competitionMemberId}:
+  #    delete:
+  #      tags:
+  #        - competitions-member-controller
+  #      summary: "Delete member from competition"
+  #      parameters:
+  #        - in: path
+  #          name: competitionId
+  #          description: competitionId
+  #          required: true
+  #          schema:
+  #            type: integer
+  #
+  #        - name: competitionMemberId
+  #          in: path
+  #          description: competitionMemberId
+  #          required: true
+  #          schema:
+  #            type: integer
+  #
+  #      responses:
+  #        '204':
+  #          description: No Content
+  #        '401':
+  #          description: Unauthorized
+  #        '403':
+  #          description: Forbidden
+
+  /competitions/{competitionId}/teams:
+    get:
+      tags:
+        - Competition Teams
+      summary: "Returns all teams in competition"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompetitionTeamResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    post:
+      tags:
+        - Competition Teams
+      summary: "Add team to competition"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+
+      parameters:
+        - in: path
+          name: competitionId
+          description: competitionId
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompetitionTeamResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /competitions/{competitionId}/teams/{competitionTeamId}:
+    put:
+      tags:
+        - Competition Teams
+      summary: "Update tema"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+        - $ref: "#/components/parameters/CompetitionTeamId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCompetitionTeamRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            applications/json:
+              schema:
+                $ref: "#/components/schemas/CompetitionTeamResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    delete:
+      tags:
+        - Competition Teams
+      summary: "Deletes team from competition"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+        - $ref: "#/components/parameters/CompetitionTeamId"
+
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /competitions/{competitionId}/teams/{competitionTeamId}/captain:
+    post:
+      tags:
+        - Competition Teams
+      summary: "Passes captainship on user with given id"
+      parameters:
+        - $ref: "#/components/parameters/CompetitionId"
+        - $ref: "#/components/parameters/CompetitionTeamId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: number
+                  example: 6
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+
+
+  /pubs:
+    get:
+      tags:
+        - Pubs
+      summary: Returns all pubs
+      parameters:
+        - name: latitude
+          in: query
+          required: false
+          schema:
+            type: number
+
+        - name: longitude
+          in: query
+          required: false
+          schema:
+            type: integer
+
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+
+        - name: radius
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PubResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Pubs
+      summary: Creates pub
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePubRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /pubs/{pubId}:
+    get:
+      tags:
+        - Pubs
+      summary: Returns pub with given id
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Pubs
+      summary: Updates pub with given id
+
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePubRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    delete:
+      tags:
+        - Pubs
+      summary: Deletes pub with given id
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /pubs/{pubId}/drinks:
+    get:
+      tags:
+        - Pub Drinks
+      summary: Returns offering of this pub
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PubDrinkResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    post:
+      tags:
+        - Pub Drinks
+      summary: Creates pub drink
+
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePubDrinkRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubDrinkResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /pubs/{pubId}/drinks/{pubDrinkId}:
+    get:
+      tags:
+        - Pub Drinks
+      summary: Returns pub drink with given id
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+        - $ref: "#/components/parameters/PubDrinkId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubDrinkResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    put:
+      tags:
+        - Pub Drinks
+      summary: Updates pub drink with given id
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+        - $ref: "#/components/parameters/PubDrinkId"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePubDrinkRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PubDrinkResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+    delete:
+      tags:
+        - Pub Drinks
+      summary: Deletes pub drink with given id
+      parameters:
+        - $ref: "#/components/parameters/PubId"
+        - $ref: "#/components/parameters/PubDrinkId"
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundResponse'
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Returns all users
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Returns currently signed in user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+    put:
+      tags:
+        - Users
+      summary: Updates currently signed in user
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+
+components:
+  parameters:
+    DrinkId:
+      in: path
+      name: drinkId
+      description: drinkId
+      required: true
+      schema:
+        type: integer
+
+    GatheringId:
+      name: gatheringId
+      in: path
+      description: gatheringId
+      required: true
+      schema:
+        type: integer
+
+    GatheringDrinkId:
+      name: gatheringDrinkId
+      in: path
+      description: gatheringDrinkId
+      required: true
+      schema:
+        type: integer
+
+    GatheringMemberId:
+      name: gatheringMemberId
+      in: path
+      description: gatheringMemberId
+      required: true
+      schema:
+        type: integer
+
+    CompetitionId:
+      name: competitionId
+      in: path
+      description: competitionId
+      required: true
+      schema:
+        type: integer
+
+    CompetitionDrinkId:
+      in: path
+      name: competitionDrinkId
+      description: competitionDrinkId
+      required: true
+      schema:
+        type: integer
+
+    CompetitionTeamId:
+      in: path
+      name: competitionTeamId
+      description: competitionTeamId
+      required: true
+      schema:
+        type: integer
+
+    PubId:
+      in: path
+      name: pubId
+      description: pubId
+      required: true
+      schema:
+        type: integer
+
+    PubDrinkId:
+      in: path
+      name: pubDrinkId
+      description: pubDrinkId
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    CreateDrinkRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Teleport
+        alcoholVolume:
+          type: number
+          format: double
+          example: 60.0
+
+    CreateGatheringDrinkRequest:
+      type: object
+      properties:
+        pubDrinkId:
+          type: integer
+
+    CreateGatheringMemberRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 75
+
+    CreateGatheringRequest:
+      required:
+        - title
+        - pubId
+        - memberIds
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Gathering@Five"
+        pubId:
+          type: integer
+          example: 55
+        memberIds:
+          type: array
+          items:
+            type: integer
+          example: [ 5, 64, 22, 78 ]
+        public:
+          type: boolean
+          example: false
+
+    CreateCompetitionDrinkRequest:
+      type: object
+      properties:
+        pubDrinkId:
+          type: integer
+
+    CreateCompetitionRequest:
+      required:
+        - title
+        - endType
+        - pubId
+        - teams
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Big beer showdown"
+        endType:
+          $ref: "#/components/schemas/CompetitionEndType"
+        startDateTime:
+          $ref: "#/components/schemas/DateTime"
+        endDateTime:
+          $ref: "#/components/schemas/DateTime"
+        amount:
+          type: integer
+          example: 12
+        pubId:
+          type: integer
+          example: 148
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamRequest"
+          # Pub
+
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Veselí lumíci"
+        captainId:
+          type: integer
+          example: 72
+
+    CreatePubDrinkRequest:
+      type: object
+      properties:
+        drinkId:
+          type: integer
+          format: int64
+          example: 4
+        price:
+          type: number
+          format: double
+          example: 155
+        volume:
+          type: number
+          example: 20
+
+    CreatePubRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Propaganda"
+        country:
+          type: string
+          example: "Czech Republic"
+        city:
+          type: string
+          example: "Prague"
+        street:
+          type: string
+          example: "Pštrossova 220/29"
+        latitude:
+          type: number
+          format: double
+          example: 50.079995087080945
+        longitude:
+          type: number
+          format: double
+          example: 14.415304373330383
+        postalCode:
+          type: string
+          example: "11000"
+
+    # Responses
+    # Drink
+    DrinkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 5
+        name:
+          type: string
+          example: Teleport
+        alcoholVolume:
+          type: number
+          format: double
+          example: 60.0
+
+    # Gathering
+    GatheringDrankDrinkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 87
+        createdAt:
+          type: string
+          example: 2022-04-16T06:14:17
+        drankBy:
+          $ref: '#/components/schemas/UserResponse'
+        pubDrink:
+          $ref: '#/components/schemas/PubDrinkResponse'
+
+    GatheringMemberResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 64
+        gatheringId:
+          type: integer
+          example: 42
+        owner:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/UserResponse'
+
+    GatheringResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        title:
+          type: string
+          example: Gathering@Five
+        finished:
+          type: boolean
+        public:
+          type: boolean
+        pub:
+          $ref: '#/components/schemas/PubResponse'
+        startDateTime:
+          $ref: "#/components/schemas/DateTime"
+
+      # Competition
+
+    CompetitionDrankDrinkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 23
+        teamId:
+          type: integer
+          example: 17
+        createdAt:
+          $ref: "#/components/schemas/DateTime"
+        addedBy:
+          $ref: '#/components/schemas/UserResponse'
+        pubDrink:
+          $ref: '#/components/schemas/PubDrinkResponse'
+
+    CompetitionMemberResponse:
+      type: object
+      properties:
+        competition:
+          $ref: '#/components/schemas/CompetitionResponse'
+        owner:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/UserResponse'
+
+    CompetitionTeamResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 72
+        title:
+          type: string
+          example: "Veselí lumíci"
+        competitionId:
+          type: integer
+          example: 6
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/UserResponse'
+              isCaptain:
+                type: boolean
+                example: false
+
+    CompetitionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 187
+        title:
+          type: string
+        startDateTime:
+          $ref: "#/components/schemas/DateTime"
+        endDateTime:
+          $ref: "#/components/schemas/DateTime"
+        endType:
+          $ref: "#/components/schemas/CompetitionEndType"
+        finished:
+          type: boolean
+        pub:
+          $ref: '#/components/schemas/PubResponse'
+
+    PubDrinkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 147
+        pubId:
+          type: number
+          example: 55
+        price:
+          type: number
+          format: double
+          example: 155
+        drink:
+          $ref: '#/components/schemas/DrinkResponse'
+
+    PubResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 13
+        name:
+          type: string
+          example: "Propaganda"
+        country:
+          type: string
+          example: "Czech republic"
+        city:
+          type: string
+          example: "Prague"
+        street:
+          type: string
+          example: "Pštrossova 220/29"
+        postalCode:
+          type: string
+          example: "11000"
+        latitude:
+          type: number
+          format: double
+          example: 50.079995087080945
+        longitude:
+          type: number
+          format: double
+          example: 14.415304373330383
+
+      # Drink
+    UpdateDrinkRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        alcoholVolume:
+          type: number
+          format: double
+
+      # Gathering
+    UpdateGatheringRequest:
+      required:
+        - title
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Gathering@Five"
+        public:
+          type: boolean
+
+      # Competition
+    UpdateCompetitionTeamRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Veselí lumíci"
+        memberIds:
+          type: array
+          items:
+            type: number
+            example: [ 1, 5, 9 ]
+
+    UpdateCompetitionRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Great beer showdown"
+
+    UpdatePubDrinkRequest:
+      type: object
+      properties:
+        price:
+          type: integer
+          example: 155
+        volume:
+          type: integer
+          example: 20
+
+    UpdatePubRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Propaganda"
+        country:
+          type: string
+          example: "Czech Republic"
+        city:
+          type: string
+          example: "Prague"
+        street:
+          type: string
+          example: "Pštrossova 220/29"
+        latitude:
+          type: number
+          format: double
+          example: 50.079995087080945
+        longitude:
+          type: number
+          format: double
+          example: 14.415304373330383
+        postalCode:
+          type: string
+          example: "11000"
+
+    DateTime:
+      type: string
+      example: 2022-04-16T14:14:17
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        sex:
+          type: string
+          enum:
+            - MAN
+            - OTHER
+            - WOMAN
+        username:
+          type: string
+          example: hugo.mrazek
+        weight:
+          type: number
+          format: double
+          example: 67.5
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 75
+        username:
+          type: string
+          example: "hugo.mrazek"
+        email:
+          type: string
+          example: "hugo.mrazek@gmail.com"
+        sex:
+          type: string
+          example: "MALE"
+        weight:
+          type: number
+          format: double
+          example: 97.5
+
+    CompetitionEndType:
+      type: string
+      enum: [ "LEADER_STOPS", "TIME_ATTACK", "AMOUNT" ]
+
+    ResourceNotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Resource not found"
+
+    RouteNotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Route not found"
+
+    ForbiddenResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Can't touch this"
+
+    UnauthorizedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Wait, that's illegal"
+
+    BadRequestResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Bad request"
+        errors:
+          type: object
+          description: Note that response differs for each request based on the required values of given request.
+          example:
+            name: "Name is required"
+            alcoholVolume: "Alcohol volume needs to be a positive integer"
